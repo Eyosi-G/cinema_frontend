@@ -6,9 +6,12 @@ export const login = (user)=>({
 export const resetLogin = ()=>({
     type: types.RESET_LOGIN
 })
-export const updatePassword = (passwords)=>({
+export const updatePassword = (oldPassword, newPassword)=>({
     type: types.CHANGE_PASSWORD_ASYNC,
-    payload: passwords
+    payload: {
+        oldPassword,
+        newPassword
+    }
 })
 export const resetUpdatePassword = ()=>({
     type: types.CHANGE_PASSWORD_RESET

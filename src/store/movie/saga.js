@@ -194,7 +194,7 @@ function* handleFetchCommingSoonMovies(action) {
     });
     const { limit, page } = action.payload;
     const response = yield axios.get(
-      `${config.baseURL}/movies?page=${page}&limit=${limit}&released=true`
+      `${config.baseURL}/movies?page=${page}&limit=${limit}&commingsoon=true`
     );
     yield put({
       type: types.FETCH_COMMING_SOON_SUCCESS,

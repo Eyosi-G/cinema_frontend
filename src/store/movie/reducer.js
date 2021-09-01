@@ -315,7 +315,7 @@ const movieReducer = (state = initialState, action) => {
     }
 
     case types.FETCH_COMMING_SOON_SUCCESS: {
-      const { movies, count } = action.payload;
+      const { movies, size } = action.payload;
       const updatedMovies = [...state.commingSoon.movies, ...movies];
       return {
         ...state,
@@ -323,7 +323,7 @@ const movieReducer = (state = initialState, action) => {
           movies: updatedMovies,
           loading: false,
           error: null,
-          size: count,
+          size: size,
         },
       };
     }

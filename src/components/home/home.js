@@ -62,11 +62,16 @@ const Home = (props) => {
               loading
             </Box>
           )}
-          <Box display="flex" flexWrap="wrap">
+          <Grid>
             {props.nowWatching.movies.map((movie) => {
-              return <MovieCard movie={movie} key={movie.id} loadMore />;
+              return (
+                <Grid item >
+                  <MovieCard movie={movie} key={movie.id} learnMore />
+                </Grid>
+              );
             })}
-          </Box>
+          </Grid>
+          <Box display="flex" flexWrap="wrap"></Box>
           {props.nowWatching.size > 0 && (
             <Button onClick={nowWatchingLoadingMore}>Load More</Button>
           )}

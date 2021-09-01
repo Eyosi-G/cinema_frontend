@@ -30,20 +30,28 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "900",
     fontSize: "14px",
   },
+  contentWrapper: {
+    textOverflow: "ellipsis",
+    height: "auto",
+    overflow: "hidden",
+  },
   content: {
     color: "#616161",
     fontSize: "12px",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    maxHeight: "50px",
+    height: "auto",
+    display: "-webkit-box",
+    "-webkit-line-clamp": 4,
+    "-webkit-box-orient": "vertical",
   },
   info: {
     display: "flex",
     flexDirection: "column",
-    flexWrap: "wrap",
     flexGrow: 1,
   },
-  button: {},
+  button: {
+  },
 }));
 const MovieCard = (props) => {
   const classes = useStyles();
@@ -66,18 +74,18 @@ const MovieCard = (props) => {
               {props.movie.genres.toString()}
             </Typography>
           </Box>
-          <Box my={1}>
+          <Box my={1} >
             <Typography className={classes.title}>Synopsis</Typography>
-            <Typography
-              className={classes.content}
-              style={{ textAlign: "justify" }}
-            >
+            <Typography className={classes.content} align="justify">
               {props.movie.summary}
             </Typography>
           </Box>
-          <Box flexGrow={1} />
-          <Box display="flex" justifyContent="flex-end">
-            {props.loadMore && (
+          <Box flexGrow={1}/>
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+          >
+            {props.learnMore && (
               <Button
                 size="small"
                 className={classes.button}

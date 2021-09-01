@@ -40,11 +40,11 @@ function* handlePasswordChange(action) {
     });
     const storageResponse = yield call(
       [localStorage, localStorage.getItem],
-      config.storage
+      config.authStorage
     );
     const storageData = JSON.parse(storageResponse);
-    const response = yield axios.patch(
-      `${config.baseURL}/auth/change_password`,
+    yield axios.patch(
+      `${config.baseURL}/password`,
       action.payload,
       {
         headers: {
@@ -55,6 +55,7 @@ function* handlePasswordChange(action) {
     );
     yield put({
       type: types.CHANGE_PASSWORD_SUCCESS,
+      payload: "password changed successfully !"
     });
   } catch (error) {
     yield put({

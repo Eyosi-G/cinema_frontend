@@ -1,5 +1,7 @@
+const prodURL = 'https://cinema-addis.herokuapp.com/api/v1';
+const devURL = 'http://localhost:8080/api/v1'
 const config = {
-  baseURL: "http://localhost:8080/api/v1",
+  baseURL: devURL,
   storage: "store",
   authStorage: "authStore",
   min: 10,

@@ -25,6 +25,7 @@ import ProtectedRoute from "./components/protected-route/protected-route";
 import roles from "./utils/constants/roles";
 import config from "./config";
 import PageNotFound from "./components/404/404";
+import BookingReports from "./components/booking-reports/booking-reports";
 const RootApp = () => {
   const jsonData = localStorage.getItem(config.authStorage);
   if (jsonData == undefined) {
@@ -121,6 +122,11 @@ const App = () => {
         <ProtectedRoute roles={[roles.admin]} exact path="/settings">
           <Navigation>
             <Settings />
+          </Navigation>
+        </ProtectedRoute>
+        <ProtectedRoute roles={[roles.admin]} exact path="/booking-reports">
+          <Navigation>
+            <BookingReports />
           </Navigation>
         </ProtectedRoute>
         <Route path="/404" component={PageNotFound} />

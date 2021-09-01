@@ -8,7 +8,7 @@ const initialState = {
   changePassword: {
     isLoading: false,
     error: null,
-    success:false
+    success:null
   },
 };
 const authReducer = (state = initialState, action) => {
@@ -24,7 +24,6 @@ const authReducer = (state = initialState, action) => {
       };
     }
     case types.LOGIN_SUCCESS: {
-      console.log('here')
       return {
         ...state,
         login: {
@@ -60,7 +59,7 @@ const authReducer = (state = initialState, action) => {
         changePassword:{
           isLoading: true,
           error:null,
-          success:false
+          success:null
         }
       }
     }
@@ -70,7 +69,7 @@ const authReducer = (state = initialState, action) => {
         changePassword:{
           isLoading: false,
           error:null,
-          success:true
+          success:action.payload
         }
       }
     }
@@ -80,7 +79,7 @@ const authReducer = (state = initialState, action) => {
         changePassword:{
           isLoading: false,
           error:action.payload,
-          success:false
+          success:null
         }
       }
     }
@@ -90,7 +89,7 @@ const authReducer = (state = initialState, action) => {
         changePassword:{
           isLoading: false,
           error:null,
-          success:false
+          success:null
         }
       }
     }

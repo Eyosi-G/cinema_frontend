@@ -13,7 +13,7 @@ const theme = createTheme({
       textTransform: "none",
       color:amber
     },
-    fontFamily: "monospace",
+    fontFamily: "'IBM Plex Sans Arabic', sans-serif;",
   },
 });
 

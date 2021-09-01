@@ -16,7 +16,7 @@ import {
   Typography,
   Link,
   FormControlLabel,
-  Switch
+  Switch,
 } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
@@ -43,8 +43,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
   },
   chip: {
-    marginLeft: 2,
-    marginRight: 2,
+    margin: 2,
   },
 }));
 
@@ -74,7 +73,7 @@ const MovieForm = (props) => {
         cover_image: null,
         casts: [],
         genres: [],
-        comming_soon: false
+        comming_soon: false,
       });
       formik.setTouched({});
     }
@@ -111,7 +110,7 @@ const MovieForm = (props) => {
       genres: [],
       genre: "",
       cast: "",
-      comming_soon:false
+      comming_soon: false,
     },
     onSubmit: (values) => {
       const movie = {
