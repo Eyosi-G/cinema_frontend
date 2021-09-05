@@ -56,8 +56,15 @@ const ScheduleForm = (props) => {
 
   useEffect(async () => {
     setMovie({ ...movie, loading: true });
+    const storageResponse = localStorage.getItem(config.authStorage);
+    const storageData = JSON.parse(storageResponse);
     const response = await axios.get(
-      `${config.baseURL}/movies?name=${movie.inputValue}&released=true`
+      `${config.baseURL}/movies?name=${movie.inputValue}&released=true`,
+      {
+        headers: {
+          authorization: storageData.token,
+        },
+      }
     );
     console.log(response.data.movies);
     setMovie({ ...movie, loading: false, options: response.data.movies });
@@ -65,8 +72,15 @@ const ScheduleForm = (props) => {
 
   useEffect(async () => {
     setHall({ ...hall, loading: true });
+    const storageResponse = localStorage.getItem(config.authStorage);
+    const storageData = JSON.parse(storageResponse);
     const response = await axios.get(
-      `${config.baseURL}/cinemas?name=${hall.inputValue}`
+      `${config.baseURL}/cinemas?name=${hall.inputValue}`,
+      {
+        headers: {
+          authorization: storageData.token,
+        },
+      }
     );
     setHall({ ...hall, loading: false, options: response.data.cinemas });
   }, [hall.inputValue]);
@@ -320,7 +334,9 @@ const ScheduleForm = (props) => {
           </Grid>
 
           <Box display="flex" justifyContent="flex-end" mt={1}>
-            <Button variant="outlined" onClick={()=>history.goBack()}>Cancel</Button>
+            <Button variant="outlined" onClick={() => history.goBack()}>
+              Cancel
+            </Button>
             <Box mr={2} />
             <Button variant="contained" type="submit" color="primary">
               Submit
