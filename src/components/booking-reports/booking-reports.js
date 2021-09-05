@@ -54,6 +54,7 @@ const BookingReports = (props) => {
               <StyledTableCell>Schedule</StyledTableCell>
               <StyledTableCell>Cinema Hall</StyledTableCell>
               <StyledTableCell>Seats</StyledTableCell>
+              <StyledTableCell>Approved By</StyledTableCell>
               <StyledTableCell>Amount Paid</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -73,20 +74,31 @@ const BookingReports = (props) => {
                 <StyledTableRow>
                   <StyledTableCell>{ticket.movie.title}</StyledTableCell>
                   <StyledTableCell>
-                    {new Date(ticket.schedule_date_time).toLocaleString("en-us")}
+                    {new Date(ticket.schedule_date_time).toLocaleString(
+                      "en-us"
+                    )}
                   </StyledTableCell>
                   <StyledTableCell>{ticket.cinema_hall_name}</StyledTableCell>
-                  <StyledTableCell>{ticket.seats.map(seat => seat.seatName).toString()}</StyledTableCell>
-                  <StyledTableCell>{ticket.amount_paid}&nbsp;ETB</StyledTableCell>
+                  <StyledTableCell>
+                    {ticket.seats.map((seat) => seat.seatName).toString()}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {ticket.approved ? ticket.approvedBy : "---"}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {ticket.amount_paid}&nbsp;ETB
+                  </StyledTableCell>
                 </StyledTableRow>
               );
             })}
           </TableBody>
 
           <TableRow>
-            <TableCell colSpan={3}></TableCell>
-            <TableCell>Total</TableCell>
-            <TableCell>{props.ticketsList.total} ETB</TableCell>
+            <TableCell colSpan={4}></TableCell>
+            <TableCell style={{ fontWeight: "bold" }}>Total</TableCell>
+            <TableCell style={{ fontWeight: "bold" }}>
+              {props.ticketsList.total} ETB
+            </TableCell>
           </TableRow>
         </Table>
       </TableContainer>

@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Dialog,
   DialogContent,
+  DialogActions,
   CircularProgress,
   Snackbar,
   DialogTitle,
@@ -25,7 +26,7 @@ import config from "../../config";
 import { useHistory } from "react-router";
 import { useFormik } from "formik";
 import { Alert } from "@material-ui/lab";
-
+import { formatTime} from '../../utils/date-time-format'
 const useStyle = makeStyles((theme) => ({
   title: {
     fontWeight: "bold",
@@ -65,7 +66,7 @@ const Checkout = (props) => {
           localStorage.clear();
           history.goBack();
         }
-        setTime(interval.toLocaleString("en-us"));
+        setTime(formatTime(interval));
       }
     }, 1000);
 
@@ -82,45 +83,19 @@ const Checkout = (props) => {
       props.resetCancelReservation();
     };
   }, [props.canceledReservation.success]);
-  const adjustPhoneNumber = (phonenumber) => {
-    //0911139074
-    //+2510911139074
-    //911139074
-    let adjusted = "";
-    if (phonenumber.length === 10 && phonenumber[0] == "0") {
-      adjusted = "+251" + phonenumber.slice(1);
-    }
-    if (phonenumber.length === 14 && phonenumber.slice(0, 5) == "+2510") {
-      adjusted = "+251" + phonenumber.slice(5);
-    }
-    if (phonenumber.length === 9 && phonenumber[0] == "9") {
-      adjusted = "+251" + phonenumber;
-    }
-    if (phonenumber.length === 13 && phonenumber.slice(0, 5) == "+2519") {
-      adjusted = phonenumber;
-    }
-    return adjusted;
-  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
-      phonenumber: "",
       agreed: false,
     },
     onSubmit: (values) => {
-      const adjustedPhonenumber = adjustPhoneNumber(values.phonenumber);
-      props.submitPaymentInfo(adjustedPhonenumber, values.email);
+      props.submitPaymentInfo(values.email);
     },
     validate: (values) => {
       const error = {};
       if (values.email.length <= 0) {
         error.email = "email can't be empty";
-      }
-      if (
-        values.phonenumber.length < 9 ||
-        !new RegExp("^[0-9+]+$").test(values.phonenumber)
-      ) {
-        error.phonenumber = "phonenumber is wrong format";
       }
       if (!values.agreed) {
         error.agreed = "please agree to term and condition";
@@ -128,15 +103,15 @@ const Checkout = (props) => {
       return error;
     },
   });
+  useEffect(() => {
+    if (props.paymentInfo.data) {
+      localStorage.removeItem(config.storage);
+      props.resetSubmitPaymentInfo();
+      window.location.replace(props.paymentInfo.data);
+    }
+  }, [props.paymentInfo]);
   return (
     <div>
-      <Dialog open={props.paymentInfo.data}>
-        <DialogTitle>Invoice is created successfully !</DialogTitle>
-        <DialogContent>
-          Invoice has been sent to your HelloCash account with code &nbsp;
-          {props.paymentInfo.data}. Please, confirm to finish purchase!
-        </DialogContent>
-      </Dialog>
       <Dialog open={props.paymentInfo.loading}>
         <DialogContent>
           <CircularProgress disableShrink />
@@ -151,7 +126,7 @@ const Checkout = (props) => {
       </Snackbar>
 
       <Card elevation="0" className={classes.card}>
-        <Typography align="right"> {time} min</Typography>
+        <Typography align="right"> {time}</Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
             <Typography className={classes.title}>
@@ -205,25 +180,8 @@ const Checkout = (props) => {
               />
 
               <Box mt={2} />
-              <Typography className={classes.content}>
-                *Please, provide phonenumber
-              </Typography>
-              <TextField
-                variant="outlined"
-                label="Phone Number"
-                type="text"
-                fullWidth
-                margin="dense"
-                name="phonenumber"
-                value={formik.values.phonenumber}
-                onChange={formik.handleChange}
-                error={formik.touched.phonenumber && formik.errors.phonenumber}
-              />
-
-              <Box mt={2} />
-              <Box mt={2} />
               <div>
-                <img src={hellocash} width="140px" height="40px" />
+                <img src={yenepay} width="120px" height="40px" />
               </div>
               <Box mt={2}>
                 <FormControl
@@ -291,8 +249,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCheckout: () => dispatch(scheduleActions.fetchCheckout()),
-    submitPaymentInfo: (phonenumber, email) =>
-      dispatch(scheduleActions.submitPaymentInfo(phonenumber, email)),
+    submitPaymentInfo: (email) =>
+      dispatch(scheduleActions.submitPaymentInfo(email)),
     resetSubmitPaymentInfo: () =>
       dispatch(scheduleActions.resetSubmitPaymentInfo()),
     cancelReservation: () => dispatch(scheduleActions.cancelReservation()),

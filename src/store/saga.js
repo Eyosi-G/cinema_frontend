@@ -6,6 +6,7 @@ import scheduleSaga from "./schedule/saga";
 import authSaga from "./auth/saga";
 import dashboardSaga from "./dashboard/saga";
 import ticketSaga from "./ticket/saga";
+import userSaga from "./user/saga";
 function* rootSaga() {
   yield all([
     call(movieSaga),
@@ -14,7 +15,8 @@ function* rootSaga() {
     call(scheduleSaga),
     call(authSaga),
     call(dashboardSaga),
-    call(ticketSaga)
+    call(ticketSaga),
+    call(userSaga),
   ]);
 }
 export default rootSaga;

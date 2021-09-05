@@ -33,7 +33,9 @@ const Navigation = (props) => {
   const classes = navigationStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const history = useHistory()
+  const history = useHistory();
+  const jsonData = localStorage.getItem(config.authStorage);
+  const roles = jsonData ? JSON.parse(jsonData).user.roles : [];
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -66,9 +68,9 @@ const Navigation = (props) => {
           <Button
             style={{ color: "white" }}
             startIcon={<ExitToAppIcon style={{ fill: "white" }} />}
-            onClick={()=>{
-              localStorage.removeItem(config.authStorage)
-              history.push('/')
+            onClick={() => {
+              localStorage.removeItem(config.authStorage);
+              history.push("/login");
             }}
           >
             logout
@@ -95,14 +97,18 @@ const Navigation = (props) => {
         </div>
         <Divider />
         <List>
-          {drawerOptions.map((option, index) => (
-            <ListItem button key={index}>
-              <ListItemIcon>{option.icon}</ListItemIcon>
-              <Link component={RouterLink} to={option.link}>
-                <ListItemText primary={option.text} />
-              </Link>
-            </ListItem>
-          ))}
+          {drawerOptions.map((option, index) => {
+            if (option.roles.some((role) => roles.includes(role))) {
+              return (
+                <ListItem button key={index}>
+                  <ListItemIcon>{option.icon}</ListItemIcon>
+                  <Link component={RouterLink} to={option.link}>
+                    <ListItemText primary={option.text} />
+                  </Link>
+                </ListItem>
+              );
+            }
+          })}
         </List>
       </Drawer>
       <main

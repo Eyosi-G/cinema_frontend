@@ -55,7 +55,10 @@ const SelectSeat = (props) => {
     };
   }, []);
   useEffect(() => {
-    if (props.scheduleDetail.data && props.scheduleDetail.data.hall.seats.grid) {
+    if (
+      props.scheduleDetail.data &&
+      props.scheduleDetail.data.hall.seats.grid
+    ) {
       setSeats(props.scheduleDetail.data.hall.seats.grid);
     }
   }, [props.scheduleDetail.data]);
@@ -178,6 +181,40 @@ const SelectSeat = (props) => {
                 </Box>
               );
             })}
+            <Box display="flex" justifyContent="center" my={4}>
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <Seat
+                    selectSeat={() => {}}
+                    unSelectSeat={() => {}}
+                    seat={{ isSeat: true }}
+                  />
+                </Box>
+                <Typography>seat</Typography>
+              </Box>
+              <Box mr={2}/>
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <Seat
+                    selectSeat={() => {}}
+                    unSelectSeat={() => {}}
+                    seat={{ isSeat: true, isSelected: true }}
+                  />
+                </Box>
+                <Typography>selected</Typography>
+              </Box>
+              <Box mr={2}/>
+              <Box>
+                <Box display="flex" justifyContent="center">
+                  <Seat
+                    selectSeat={() => {}}
+                    unSelectSeat={() => {}}
+                    seat={{ isSeat: true, isVip: true }}
+                  />
+                </Box>
+                <Typography>vip</Typography>
+              </Box>
+            </Box>
           </Grid>
           <Grid item xs={12} md={4}>
             <Typography className={classes.title}>

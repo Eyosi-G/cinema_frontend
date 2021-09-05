@@ -35,8 +35,16 @@ function* handleEditMovie(action) {
     casts.forEach((cast) => {
       formData.append("casts", cast);
     });
-
-    yield axios.put(`${config.baseURL}/movies`, formData);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    yield axios.put(`${config.baseURL}/movies`, formData,{
+      headers:{
+        authorization:storageData.token
+      }
+    });
     yield put({
       type: types.EDIT_MOVIE_SUCCESS,
       payload: "Movie edited successfully !",
@@ -53,7 +61,16 @@ function* handleEditMovie(action) {
 function* handleDeleteMovie(action) {
   try {
     const id = action.payload;
-    yield axios.delete(`${config.baseURL}/movies/${id}`);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    yield axios.delete(`${config.baseURL}/movies/${id}`,{
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.DELETE_MOVIE_SUCCESS,
       payload: id,
@@ -71,7 +88,16 @@ function* handleFetchMovie(action) {
       type: types.FETCH_MOVIE_STARTED,
     });
     const id = action.payload;
-    const response = yield axios.get(`${config.baseURL}/movies/${id}`);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    const response = yield axios.get(`${config.baseURL}/movies/${id}`,{
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.FETCH_MOVIE_SUCCESS,
       payload: response.data,
@@ -90,8 +116,19 @@ function* handleFetchMovies(action) {
       type: types.FETCH_MOVIES_STARTED,
     });
     const { name, limit, page } = action.payload;
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+
     const response = yield axios.get(
-      `${config.baseURL}/movies?page=${page}&limit=${limit}&name=${name}`
+      `${config.baseURL}/movies?page=${page}&limit=${limit}&name=${name}`,
+      {
+        headers:{
+          authorization:storageData.token
+        }
+      }
     );
     yield put({
       type: types.FETCH_MOVIES_SUCCESS,
@@ -135,7 +172,16 @@ function* handleCreateMovie(action) {
     casts.forEach((cast) => {
       formData.append("casts", cast);
     });
-    yield axios.post(`${config.baseURL}/movies`, formData);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    yield axios.post(`${config.baseURL}/movies`, formData,{
+      headers:{
+        authorization:storageData.token,
+      }
+    });
     yield put({
       type: types.CREATE_MOVIE_SUCCESS,
     });
@@ -155,7 +201,7 @@ function* handleFetchNowWatchingMovies(action) {
     });
     const { limit, page } = action.payload;
     const response = yield axios.get(
-      `${config.baseURL}/schedules/movies/now-watching?page=${page}&limit=${limit}`
+      `${config.baseURL}/schedules/movies/now-watching?page=${page}&limit=${limit}`      
     );
     yield put({
       type: types.FETCH_NOW_WATCHING_SUCCESS,
@@ -193,8 +239,18 @@ function* handleFetchCommingSoonMovies(action) {
       type: types.FETCH_COMMING_SOON_LOADING,
     });
     const { limit, page } = action.payload;
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
     const response = yield axios.get(
-      `${config.baseURL}/movies?page=${page}&limit=${limit}&commingsoon=true`
+      `${config.baseURL}/movies?page=${page}&limit=${limit}&commingsoon=true`,
+      {
+        headers:{
+          authorization: storageData.token
+        }
+      }
     );
     yield put({
       type: types.FETCH_COMMING_SOON_SUCCESS,

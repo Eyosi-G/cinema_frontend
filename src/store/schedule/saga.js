@@ -7,11 +7,22 @@ import * as types from "./types";
 function* handleFetchSchedules(action) {
   try {
     const { page, limit } = action.payload;
+    
     yield put({
       type: types.FETCH_SCHEDULES_LOADING,
     });
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
     const response = yield axios.get(
-      `${config.baseURL}/schedules?page=${page}&limit=${limit}`
+      `${config.baseURL}/schedules?page=${page}&limit=${limit}`,
+      {
+        headers:{
+          authorization: storageData.token
+        }
+      }
     );
     yield put({
       type: types.FETCH_SCHEDULES_SUCCESS,
@@ -28,7 +39,16 @@ function* handleFetchSchedules(action) {
 function* handleDeleteSchedule(action) {
   try {
     const id = action.payload;
-    axios.delete(`${config.baseURL}/schedules/${id}`);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    axios.delete(`${config.baseURL}/schedules/${id}`,{
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.DELETE_SCHEDULE_SUCCESS,
       payload: id,
@@ -46,7 +66,16 @@ function* handleCreateSchedule(action) {
     yield put({
       type: types.CREATE_SCHEDULE_STARTED,
     });
-    yield axios.post(`${config.baseURL}/schedules`, action.payload);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    yield axios.post(`${config.baseURL}/schedules`, action.payload,{
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.CREATE_SCHEDULE_SUCCESS,
       payload: "Successfuly schedule created!",
@@ -131,7 +160,7 @@ function* handleFetchCheckouts(action) {
 }
 function* handleSubmitPaymentInfo(action) {
   try {
-    const { email, phonenumber } = action.payload;
+    const { email } = action.payload;
     yield put({
       type: types.SUBMIT_PAYMENT_INFO_LOADING,
     });
@@ -144,7 +173,6 @@ function* handleSubmitPaymentInfo(action) {
       `${config.baseURL}/invoices`,
       {
         email,
-        phonenumber,
       },
       {
         headers: {
@@ -168,7 +196,16 @@ function* handleEditSchedule(action) {
     yield put({
       type: types.EDIT_SCHEDULE_STARTED,
     });
-    yield axios.put(`${config.baseURL}/schedules`, action.payload);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    yield axios.put(`${config.baseURL}/schedules`, action.payload,{
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.EDIT_SCHEDULE_SUCCESS,
       payload: "schedule successfully edited!",

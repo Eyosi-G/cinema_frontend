@@ -51,10 +51,9 @@ export const fetchCheckout = () => ({
   type: types.FETCH_CHECKOUT_ASYNC,
 });
 
-export const submitPaymentInfo = (phonenumber, email) => ({
+export const submitPaymentInfo = (email) => ({
   type: types.SUBMIT_PAYMENT_INFO_ASYNC,
   payload: {
-    phonenumber,
     email,
   },
 });
@@ -71,9 +70,9 @@ export const resetEditSchedule = () => ({
   type: types.EDIT_SCHEDULE_RESET,
 });
 
-export const cancelReservation = ()=>({
-  type: types.CANCEL_RESERVATION_ASYNC
-})
-export const resetCancelReservation = ()=>({
-  type: types.CANCEL_RESERVATION_RESET
-})
+export const cancelReservation = () => ({
+  type: types.CANCEL_RESERVATION_ASYNC,
+});
+export const resetCancelReservation = () => ({
+  type: types.CANCEL_RESERVATION_RESET,
+});

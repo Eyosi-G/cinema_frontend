@@ -56,8 +56,7 @@ const SignIn = (props) => {
   }, []);
 
   if (props.login.data) {
-    console.log('here')
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/" />;
   }
   return (
     <Container maxWidth="xs">

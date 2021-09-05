@@ -313,7 +313,9 @@ const CinemaForm = (props) => {
                 </Grid>
               </Grid>
               <Box display="flex" justifyContent="flex-end" mt={1}>
-                <Button variant="outlined" size="small" color="error">
+                <Button variant="outlined" size="small" color="error" onClick={()=>
+                  history.goBack()
+                }>
                   Cancel
                 </Button>
                 <Box mr={2} />
