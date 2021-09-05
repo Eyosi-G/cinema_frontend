@@ -90,6 +90,15 @@ const Movies = (props) => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
+      {/* fetch movies */}
+      <Snackbar
+        autoHideDuration={2000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={props.movies.error}
+        onClose={() => props.resetFetchMovies()}
+      >
+        <Alert severity="error">{props.movies.error}</Alert>
+      </Snackbar>
       <Box display="flex" justifyContent="flex-end">
         <Button
           size="small"
@@ -111,6 +120,15 @@ const Movies = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {props.movies.loading && (
+              <StyledTableRow>
+                <StyledTableCell colspan={6}>
+                  <Box display="flex" justifyContent="center" mt={5}>
+                    <CircularProgress disableShrink />
+                  </Box>
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
             {props.movies.data.map((movie) => (
               <StyledTableRow>
                 <StyledTableCell>{movie.title}</StyledTableCell>
@@ -164,6 +182,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchMovies: (name, page, limit) =>
       dispatch(moviesAction.fetchMovies(name, page, limit)),
+    resetFetchMovies: () => dispatch(moviesAction.resetFetchMovies()),
     deleteMovie: (id) => dispatch(moviesAction.deleteMovie(id)),
     resetDeletedMovie: () => dispatch(moviesAction.resetDeletedMovie()),
   };

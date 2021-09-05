@@ -320,7 +320,7 @@ const ScheduleForm = (props) => {
           </Grid>
 
           <Box display="flex" justifyContent="flex-end" mt={1}>
-            <Button variant="outlined">Cancel</Button>
+            <Button variant="outlined" onClick={()=>history.goBack()}>Cancel</Button>
             <Box mr={2} />
             <Button variant="contained" type="submit" color="primary">
               Submit

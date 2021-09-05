@@ -1,6 +1,6 @@
 const roles = {
-    admin:"ADMIN",
-    ticket_taker:"TICKET_TAKER"
-}
+  admin: "ADMIN",
+  ticketer: "TICKETER",
+};
 
 export default roles;

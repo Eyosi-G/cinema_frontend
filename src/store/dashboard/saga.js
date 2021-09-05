@@ -7,7 +7,16 @@ function* handleFetchDashBoard(action) {
     yield put({
       type: types.FETCH_DASHBOARD_STARTED,
     });
-    const response = yield axios.get(`${config.baseURL}/dashboard`);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    const response = yield axios.get(`${config.baseURL}/dashboard`,{
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.FETCH_DASHBOARD_SUCCESS,
       payload: response.data,

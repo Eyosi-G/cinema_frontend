@@ -8,7 +8,16 @@ function* handleCreateCinema(action) {
     yield put({
       type: types.CREATE_CINEMA_ATTEMPT,
     });
-    yield axios.post(`${config.baseURL}/cinemas`, action.payload);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    yield axios.post(`${config.baseURL}/cinemas`, action.payload, {
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.CREATE_CINEMA_SUCCESS,
       payload: "cinema created successfully !",
@@ -26,9 +35,18 @@ function* handleFetchCinemas(action) {
     yield put({
       type: types.FETCH_CINEMAS_LOADING,
     });
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
     const { page, limit, name } = action.payload;
     const response = yield axios.get(
-      `${config.baseURL}/cinemas?page=${page}&limit=${limit}&name=${name}`
+      `${config.baseURL}/cinemas?page=${page}&limit=${limit}&name=${name}`,{
+        headers:{
+          authorization:storageData.token
+        }
+      },
     );
     yield put({
       type: types.FETCH_CINEMAS_SUCCESS,
@@ -45,7 +63,16 @@ function* handleFetchCinemas(action) {
 function* handleDeleteCinema(action) {
   try {
     const id = action.payload;
-    axios.delete(`${config.baseURL}/cinemas/${id}`);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    axios.delete(`${config.baseURL}/cinemas/${id}`,{
+      headers:{
+         authorization: storageData.token
+      }
+    });
     yield put({
       type: types.DELETE_CINEMA_SUCCESS,
       payload: id,
@@ -64,7 +91,16 @@ function* handleFetchSingleCinema(action) {
       type: types.FETCH_SINGLE_CINEMA_STARTED,
     });
     const id = action.payload;
-    const response = yield axios.get(`${config.baseURL}/cinemas/${id}`);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    const response = yield axios.get(`${config.baseURL}/cinemas/${id}`,{
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.FETCH_SINGLE_CINEMA_SUCCESS,
       payload: response.data,
@@ -81,7 +117,16 @@ function* handleEditCinema(action) {
     yield put({
       type: types.EDIT_CINEMA_STARTED,
     });
-    yield axios.put(`${config.baseURL}/cinemas`, action.payload);
+    const storageResponse = yield call(
+      [localStorage, localStorage.getItem],
+      config.authStorage
+    );
+    const storageData = JSON.parse(storageResponse);
+    yield axios.put(`${config.baseURL}/cinemas`, action.payload,{
+      headers:{
+        authorization: storageData.token
+      }
+    });
     yield put({
       type: types.EDIT_CINEMA_SUCCESS,
       payload: "cinema edited successfully !",

@@ -12,12 +12,11 @@ const useStyles = makeStyles((theme) => ({
     margin: "4px",
     padding: "7px",
     borderRadius: "5px",
-    border: "1px solid #f1f1f1",
+    // border: "1px solid #f1f1f1",
   },
   seatSelected: {
     backgroundColor: "#1b5e20",
-    // border: "1px solid #ffffff !important",
-    // borderRadius: "5px",
+
   },
   seatTaken: {
     margin: "4px",

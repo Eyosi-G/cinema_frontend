@@ -26,12 +26,21 @@ import roles from "./utils/constants/roles";
 import config from "./config";
 import PageNotFound from "./components/404/404";
 import BookingReports from "./components/booking-reports/booking-reports";
+import ManageUsers from "./components/user/manage-users/manage-users";
+import ApproveTicket from "./components/tickets/approve-ticket/approve-ticket";
 const RootApp = () => {
-  const jsonData = localStorage.getItem(config.authStorage);
-  if (jsonData == undefined) {
+  try {
+    const data = JSON.parse(localStorage.getItem(config.authStorage));
+    if (data == undefined) {
+      return <Redirect to="/home" />;
+    }
+    if (data.user.roles.includes(roles.admin))
+      return <Redirect to="/dashboard" />;
+    if (data.user.roles.includes(roles.ticketer))
+      return <Redirect to="/tickets" />;
+  } catch (error) {
     return <Redirect to="/home" />;
   }
-  return <Redirect to="/dashboard" />;
 };
 
 const App = () => {
@@ -119,7 +128,7 @@ const App = () => {
             <ScheduleForm edit />
           </Navigation>
         </ProtectedRoute>
-        <ProtectedRoute roles={[roles.admin]} exact path="/settings">
+        <ProtectedRoute roles={[roles.admin, roles.ticketer]} exact path="/settings">
           <Navigation>
             <Settings />
           </Navigation>
@@ -127,6 +136,16 @@ const App = () => {
         <ProtectedRoute roles={[roles.admin]} exact path="/booking-reports">
           <Navigation>
             <BookingReports />
+          </Navigation>
+        </ProtectedRoute>
+        <ProtectedRoute roles={[roles.admin]} exact path="/users">
+          <Navigation>
+            <ManageUsers />
+          </Navigation>
+        </ProtectedRoute>
+        <ProtectedRoute roles={[roles.ticketer]} exact path="/tickets">
+          <Navigation>
+            <ApproveTicket />
           </Navigation>
         </ProtectedRoute>
         <Route path="/404" component={PageNotFound} />
